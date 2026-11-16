@@ -1,0 +1,204 @@
+openapi: 3.0.4
+info:
+  title: Vehicle Fuel Economy
+  description: >-
+    Vehicle Fuel Economy returns the EPA ratings of every car and light truck
+    sold in the US since 1984, electric vehicles included. Search by make,
+    model, year and fuel type to get city, highway and combined MPG (or MPGe),
+    electric range, engine, drive and transmission. Paid plans add kWh per 100
+    miles, charge time at 240V, annual fuel cost, five-year savings, CO2 per
+    mile and the EPA fuel economy, greenhouse gas and smog scores.
+  termsOfService: https://apiverve.com/terms/
+  contact:
+    name: APIVerve Support
+    email: hello@apiverve.com
+    url: https://apiverve.com/contact
+  version: 1.0.0
+externalDocs:
+  description: Learn more about APIVerve
+  url: https://docs.apiverve.com?utm_source=openapi
+servers:
+  - url: https://api.apiverve.com/
+paths:
+  /v1/vehiclefueleconomy:
+    get:
+      summary: Vehicle Fuel Economy
+      description: >-
+        Get EPA MPG, EV range, costs and emissions for vehicles by make, model,
+        year and fuel type
+      operationId: vehiclefueleconomy
+      parameters:
+        - name: make
+          in: query
+          schema:
+            type: string
+          required: false
+          description: >-
+            Vehicle make, for example Toyota, Ford or Tesla. Either make or
+            model is required
+          example: Tesla
+        - name: model
+          in: query
+          schema:
+            type: string
+          required: false
+          description: >-
+            Model name or the start of it, for example Camry or Model 3. Either
+            make or model is required
+          example: Model 3
+        - name: year
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: Model year, 1984 or later
+          example: 2024
+        - name: fuelType
+          in: query
+          schema:
+            type: string
+          required: false
+          description: Only vehicles with this powertrain
+          example: electric
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: Vehicles per page, 1-50
+          example: 20
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: Page of results to return, starting at 1
+          example: 1
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  error:
+                    type: string
+                    description: error
+                  data:
+                    type: object
+                    description: data
+              example:
+                status: ok
+                error: null
+                data:
+                  count: 5
+                  page: 1
+                  pages: 3
+                  returned: 2
+                  vehicles:
+                    - epaId: 47908
+                      year: 2024
+                      make: Tesla
+                      model: Model 3 Long Range AWD
+                      baseModel: Model 3
+                      vehicleClass: Midsize Cars
+                      powertrain: electric
+                      fuelType: Electricity
+                      drive: All-Wheel Drive
+                      transmission: Automatic (A1)
+                      engine:
+                        cylinders: null
+                        displacementL: null
+                        turbocharged: false
+                        supercharged: false
+                        description: null
+                        electricMotor: 84 and 191 kW ACPM 3-Phase
+                      startStop: false
+                      mpg:
+                        unit: MPGe
+                        city: 137
+                        highway: 124
+                        combined: 130
+                      mpgAlternateFuel: null
+                      electric:
+                        rangeMiles: 342
+                        rangeCityMiles: 357
+                        rangeHighwayMiles: 323
+                        rangeKm: 550
+                        kwhPer100Miles:
+                          city: 24.7
+                          highway: 27.2
+                          combined: 25.8
+                        chargeTime240vHours: 9.4
+                        chargeTime120vHours: null
+                        onboardCharger: null
+                      annualFuelCostUsd: 600
+                      fiveYearSavingsUsd: 8000
+                      co2GramsPerMile: 0
+                      scores:
+                        fuelEconomy: 10
+                        greenhouseGas: 10
+                        smog: 10
+                      gasGuzzler: false
+                    - epaId: 48473
+                      year: 2024
+                      make: Tesla
+                      model: Model 3 Long Range AWD-E
+                      baseModel: Model 3
+                      vehicleClass: Midsize Cars
+                      powertrain: electric
+                      fuelType: Electricity
+                      drive: All-Wheel Drive
+                      transmission: Automatic (A1)
+                      engine:
+                        cylinders: null
+                        displacementL: null
+                        turbocharged: false
+                        supercharged: false
+                        description: null
+                        electricMotor: 191 kW ACPM 3-Phase
+                      startStop: false
+                      mpg:
+                        unit: MPGe
+                        city: 133
+                        highway: 122
+                        combined: 128
+                      mpgAlternateFuel: null
+                      electric:
+                        rangeMiles: 341
+                        rangeCityMiles: 355
+                        rangeHighwayMiles: 324
+                        rangeKm: 549
+                        kwhPer100Miles:
+                          city: 25.3
+                          highway: 27.7
+                          combined: 26.4
+                        chargeTime240vHours: 10
+                        chargeTime120vHours: null
+                        onboardCharger: null
+                      annualFuelCostUsd: 600
+                      fiveYearSavingsUsd: 8000
+                      co2GramsPerMile: 0
+                      scores:
+                        fuelEconomy: 10
+                        greenhouseGas: 10
+                        smog: 10
+                      gasGuzzler: false
+        '401':
+          description: Your request was not authorized, or your API Key was invalid
+        '404':
+          description: Requested resource was not found
+        '500':
+          description: A server error has occurred, try again later
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+security:
+  - api_key: []
